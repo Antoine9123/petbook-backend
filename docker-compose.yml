@@ -1,9 +1,22 @@
 version: '3.12'
 
 services:
-  web:
-    build: .
+
+  django: 
+    container_name: django_c
+    
+    build:
+      context: ./my-app
+    
+    command: python manage.py runserver 0.0.0.0:8000
+
     volumes: 
-      - "./api"
-    ports:
-      - "8000:8000"
+      - ./my-app:/usr/src/app/
+    
+    ports: 
+      - 8001:8000
+
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-m^*nfw3y!mp#(x!i)lz@a*uj_75^cvwi8l14i3)0r--erocj&3
+      - ALLOWED_HOSTS=localhost,127.0.0.1 
