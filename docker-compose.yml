@@ -1,0 +1,9 @@
+version: '3.12'
+
+services:
+  web:
+    build: .
+    volumes: 
+      - "./api"
+    ports:
+      - "8000:8000"
