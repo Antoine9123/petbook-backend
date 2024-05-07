@@ -15,12 +15,13 @@ def signup(request):
     data = {}
     if instance:
         data = UserSerializer(instance).data
-    return Response(data, content_type='application/json')
+    return Response(data)
 
 @api_view(["POST"])
 def signup(request):
-    instance =  User.objects.all().order_by("?").first()
-    data = {}
-    if instance:
-        data = UserSerializer(instance).data
-    return Response(data, content_type='application/json')
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        # instance = serializer.save()
+        print(serializer.data)
+        return Response(serializer.data)
+    return Response({"message": "invalid data"},status=400)
