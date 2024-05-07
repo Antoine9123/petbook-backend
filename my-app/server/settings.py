@@ -8,6 +8,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = os.environ.get("DEBUG")
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 
+if 'PORT' in os.environ:
+    PORT = int(os.environ['PORT'])
+else:
+    PORT = 8001
+
 
 # Application definition
 
