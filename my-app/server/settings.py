@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'users',
+    "pets"
 ]
 
 MIDDLEWARE = [
