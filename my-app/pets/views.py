@@ -12,7 +12,6 @@ from .serializers import PetSerializer
 
 
 class PetListCreateView(generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     serializer_class = PetSerializer
@@ -33,9 +32,6 @@ class PetRetrieveUpdateDeleteView(generics.GenericAPIView,
     serializer_class = PetSerializer
     queryset = Pet.objects.all()
 
-    
-
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]  
 
     def get(self, request:Request, *args, **kwargs):
