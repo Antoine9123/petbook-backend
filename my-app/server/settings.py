@@ -5,7 +5,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY") or 123
 DEBUG = os.environ.get("DEBUG")
 ALLOWED_HOSTS = []
 
@@ -142,5 +142,5 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'SIGNING_KEY': SECRET_KEY,
     'AUTH_HEADER_TYPES': ('bearer',),
-    
+
 }

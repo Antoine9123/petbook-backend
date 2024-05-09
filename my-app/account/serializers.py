@@ -29,3 +29,13 @@ class SignupSerializer(serializers.ModelSerializer):
 
         Token.objects.create(user=user)
         return user
+
+class CurrentUserPetSerializer(serializers.ModelSerializer):
+
+    pets = serializers.HyperlinkedRelatedField(
+        many=True, view_name="pet-detail", queryset=User.objects.all()
+        )
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'pets']

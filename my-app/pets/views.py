@@ -5,10 +5,13 @@ from rest_framework import status, generics, mixins
 from django.shortcuts import get_object_or_404
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 
 
 from .models import Pet
 from .serializers import PetSerializer
+from .permissions import OwnerOrReadOnly
+from account.serializers import CurrentUserPetSerializer
 
 
 class PetListCreateView(generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
@@ -16,6 +19,11 @@ class PetListCreateView(generics.GenericAPIView, mixins.ListModelMixin, mixins.C
 
     serializer_class = PetSerializer
     queryset = Pet.objects.all()
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        serializer.save(owner=user)
+        return super().perform_create(serializer)
 
     def get(self, request:Request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -32,7 +40,7 @@ class PetRetrieveUpdateDeleteView(generics.GenericAPIView,
     serializer_class = PetSerializer
     queryset = Pet.objects.all()
 
-    permission_classes = [IsAuthenticated]  
+    permission_classes = [OwnerOrReadOnly,IsAuthenticated]  
 
     def get(self, request:Request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
@@ -43,3 +51,15 @@ class PetRetrieveUpdateDeleteView(generics.GenericAPIView,
     def delete(self, request:Request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_pets_for_current_user(request:Request):
+    user = request.user
+
+    serializer = CurrentUserPetSerializer(instance=user, context={"request":request})
+
+    return Response(
+        data=serializer.data,
+        status=status.HTTP_200_OK
+    )
