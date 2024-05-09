@@ -1,60 +1,65 @@
-from django.contrib.auth.models import User
-
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.request import Request
+from rest_framework import status, generics, mixins
+from django.shortcuts import get_object_or_404
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+
 
 from .models import Pet
 from .serializers import PetSerializer
-from .permissions import IsOwnerOrReadOnly
+from .permissions import OwnerOrReadOnly
+from account.serializers import CurrentUserPetSerializer
 
 
-@api_view(['GET', 'POST'])
-@authentication_classes([TokenAuthentication])
+class PetListCreateView(generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = PetSerializer
+    queryset = Pet.objects.all()
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        serializer.save(owner=user)
+        return super().perform_create(serializer)
+
+    def get(self, request:Request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+    
+    def post(self, request:Request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class PetRetrieveUpdateDeleteView(generics.GenericAPIView, 
+        mixins.RetrieveModelMixin,
+        mixins.UpdateModelMixin, 
+        mixins.DestroyModelMixin
+):
+    serializer_class = PetSerializer
+    queryset = Pet.objects.all()
+
+    permission_classes = [OwnerOrReadOnly,IsAuthenticated]  
+
+    def get(self, request:Request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request:Request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request:Request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def pet_list(request):
+def get_pets_for_current_user(request:Request):
+    user = request.user
 
-    if request.method == 'GET':
-        pet = Pet.objects.all()
-        serializer = PetSerializer(pet, many=True)
-        return Response(serializer.data)
-    
-    elif request.method == "POST":
-        request.data['owner_id'] = request.user.id
-        serializer = PetSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-        
-        
-@api_view(['GET', 'PUT', 'DELETE'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsOwnerOrReadOnly,IsAuthenticated])
-def pet_detail(request, id):
-    print(" going to pet detail --------------------------------------------------->")
-    try:
-        pet = Pet.objects.get(id=id)
-    except Pet.DoesNotExist:
-        data = {"error": "Pet not found"}
-        return Response(data, status=status.HTTP_404_NOT_FOUND)
+    serializer = CurrentUserPetSerializer(instance=user, context={"request":request})
 
-    if request.method == 'GET':
-       serializer = PetSerializer(pet)
-       return Response(serializer.data)
-    
-    elif request.method == 'PUT':
-        request.data['owner_id'] = request.user.id
-        serializer = PetSerializer(data=request.data)
-        serializer = PetSerializer(pet, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'DELETE':
-        pet.delete()
-        data = {"message": "pet successfully deleted"}
-        return Response(data, status=status.HTTP_204_NO_CONTENT)
+    return Response(
+        data=serializer.data,
+        status=status.HTTP_200_OK
+    )

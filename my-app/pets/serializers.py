@@ -18,13 +18,13 @@ class PetSerializer(serializers.ModelSerializer):
             'birth',
             'age',
             'description',
-            'photo_url',
-            'owner_id'
+            'photo_url'
         ]
-    
+
+        
     def get_url(self, obj):
         request = self.context.get('request')
-        return reverse("pet-detail", kwargs={"id": obj.id}, request=request)
+        return reverse("pet-detail", kwargs={"pk": obj.pk}, request=request)
     
     def get_age(self, obj):
         today = date.today()
