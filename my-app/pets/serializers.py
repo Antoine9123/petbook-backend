@@ -21,7 +21,8 @@ class PetSerializer(serializers.ModelSerializer):
             'photo_url',
             'owner_id'
         ]
-    
+
+        
     def get_url(self, obj):
         request = self.context.get('request')
         return reverse("pet-detail", kwargs={"id": obj.id}, request=request)

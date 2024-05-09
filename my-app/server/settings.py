@@ -29,8 +29,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    "pets"
+    "pets",
+    "account"
+    
 ]
+
+AUTH_USER_MODEL="account.User"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
