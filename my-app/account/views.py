@@ -2,13 +2,11 @@ from django.contrib.auth import authenticate
 
 from rest_framework.response import Response
 from rest_framework.request import Request
-
 from rest_framework import status, generics
 from rest_framework.views import APIView
 
 from .tokens import create_jwt_pair_for_user
 from .serializers import SignupSerializer
-
 
 
 class SignUpView(generics.GenericAPIView):
