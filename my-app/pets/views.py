@@ -48,14 +48,18 @@ class PetRetrieveUpdateDeleteView(generics.GenericAPIView,
         return self.destroy(request, *args, **kwargs)
 
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_pets_for_current_user(request:Request):
-    user = request.user
 
-    serializer = CurrentUserPetSerializer(instance=user, context={"request":request})
 
-    return Response(
-        data=serializer.data,
-        status=status.HTTP_200_OK
-    )
+class ListPetForOwner(generics.GenericAPIView,
+        mixins.ListModelMixin
+    ):
+        queryset = Pet.objects.all()
+        serializer_class=PetSerializer
+        permission_classes=[IsAuthenticated]
+
+        def get_queryset(self):
+            username=self.kwargs.get("username")
+            return Pet.objects.filter(owner__username=username)
+
+        def get(self, request:Request, *args, **kwargs):
+            return self.list(request,*args, **kwargs)
