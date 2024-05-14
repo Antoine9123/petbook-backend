@@ -7,11 +7,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY") or 123
 DEBUG = os.environ.get("DEBUG")
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
-allowed_hosts_env = os.environ.get("ALLOWED_HOSTS")
-if allowed_hosts_env:
-    ALLOWED_HOSTS = allowed_hosts_env.split(',')
+
 
 if 'PORT' in os.environ:
     PORT = int(os.environ['PORT'])
@@ -32,10 +30,11 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     "pets",
     "account"
-    
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+CSRF_TRUSTED_ORIGINS = ['https://petbook-back-aa858b6addea.herokuapp.com']
 
 AUTH_USER_MODEL="account.User"
 
