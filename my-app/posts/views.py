@@ -56,3 +56,17 @@ class ListPostForPet(generics.GenericAPIView,
 
     def get(self, request:Request, *args, **kwargs):
         return self.list(request,*args, **kwargs)
+    
+class ListPostForCategory(generics.GenericAPIView,
+    mixins.ListModelMixin
+):
+    queryset = Post.objects.all()
+    serializer_class=PostSerializer
+    permission_classes=[IsAuthenticated]
+
+    def get_queryset(self):
+        category=self.kwargs.get("category")
+        return Post.objects.filter(pet__gender=category)
+
+    def get(self, request:Request, *args, **kwargs):
+        return self.list(request,*args, **kwargs)
