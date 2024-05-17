@@ -39,6 +39,7 @@ CSRF_TRUSTED_ORIGINS = ['https://petbook-back-aa858b6addea.herokuapp.com']
 AUTH_USER_MODEL="account.User"
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
