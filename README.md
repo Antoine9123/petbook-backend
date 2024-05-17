@@ -197,9 +197,9 @@ PUT and DELETE methods, access is restricted to the owner of the post
 ```
 
 # Follow Routes
-    [GET] api/user/<int:user_id>/: Retrieve a list of all pets followed by an user ID.
-    [POST] /add/: add a follow a pet by user
-    [DELETE] delete/: delete a follow a pet by user
+    [GET] api/follows/user/<int:user_id>/: Retrieve a list of all pets followed by an user ID.
+    [POST] api/follows/add/: add a follow a pet by user
+    [DELETE] api/follows/delete/: delete a follow a pet by user
 
 ### api/follows/user/:user_id/  [GET]
 #### output (get)
