@@ -30,7 +30,7 @@ To obtain a new token (refresh the token), users can use the /auth/jwt/refresh/ 
 }
 ```
 # Pet Routes
-    [GET] /api/pets/: Retrieve a list of all pets.
+    [GET/POST] /api/pets/: Retrieve a list of all pets or add a new one.
     [GET/PUT/DELETE] /api/pets/<id>/: Retrieve, update, or delete a specific pet by ID.
     [GET] /api/pets/get-pets-from/<username>/: Retrieve a list of pets owned by a specific user.
 
@@ -105,7 +105,7 @@ PUT and DELETE methods, access is restricted to the owner of the pet
 ```
 
 # Post Routes
-    [GET] /api/posts/: Retrieve a list of all posts.
+    [GET/POST] /api/posts/: Retrieve a list of all posts or add a new one.
     [GET/PUT/DELETE] /api/posts/<post_id>/: Retrieve, update, or delete a specific post by ID.
     [GET] get-post-from/<int:pet_id>/: Retrieve a list of posts for a specific pet ID.
     [GET] get-post-by/<str:category>/: Retrieve a list of posts for a specific pet category.
@@ -133,7 +133,7 @@ PUT and DELETE methods, access is restricted to the owner of the pet
 ```
 
 ###  /api/posts/:id/ [GET/PUT/DELETE]
-PUT and DELETE methods, access is restricted to the owner of the pet
+PUT and DELETE methods, access is restricted to the owner of the post
 
 #### input (put)
 ```
