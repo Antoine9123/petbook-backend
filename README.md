@@ -25,7 +25,7 @@ To obtain a new token (refresh the token), users can use the /auth/jwt/refresh/ 
 #### input (post)
 ```
 {
-    "username": "string",
+    "email": "string",
     "password": "string"
 }
 ```
