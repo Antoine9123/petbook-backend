@@ -7,6 +7,7 @@ User = get_user_model()
 
 
 class Post(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
     description = models.TextField(max_length=500)
     photo_url = models.CharField(max_length=200)
     pet = models.ForeignKey(Pet, on_delete=models.CASCADE)

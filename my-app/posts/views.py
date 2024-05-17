@@ -1,6 +1,7 @@
 from rest_framework import generics, mixins
 from rest_framework.request import Request
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
 
 from .serializers import PostSerializer
 from .permissions import OwnerOrReadOnly
@@ -53,7 +54,7 @@ class ListPostForPet(generics.GenericAPIView,
 
     def get_queryset(self):
         pet=self.kwargs.get("pet_id")
-        return Post.objects.filter(pet=pet)
+        return Post.objects.filter(pet=pet).order_by('-created_at')
 
     def get(self, request:Request, *args, **kwargs):
         return self.list(request,*args, **kwargs)
@@ -67,7 +68,7 @@ class ListPostForCategory(generics.GenericAPIView,
 
     def get_queryset(self):
         category=self.kwargs.get("category")
-        return Post.objects.filter(pet__gender=category)
+        return Post.objects.filter(pet__gender=category).order_by('-created_at')
 
     def get(self, request:Request, *args, **kwargs):
         return self.list(request,*args, **kwargs)
@@ -80,6 +81,6 @@ class UserFeedListView(generics.ListAPIView):
         user = self.request.user
         followed_pets = Follow.objects.filter(owner=user).values_list('pet', flat=True)
         
-        queryset = Post.objects.filter(pet__in=followed_pets)
+        queryset = Post.objects.filter(pet__in=followed_pets).order_by('-created_at')
         
         return queryset
