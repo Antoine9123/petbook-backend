@@ -30,7 +30,7 @@ class FollowDeleteView(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         user = request.user
-        pet_id = self.kwargs['pet_id']
+        pet_id = self.request.data.get('pet_id')
         follow = get_object_or_404(Follow, owner=user, pet_id=pet_id)
         follow.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
