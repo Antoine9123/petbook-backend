@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view, permission_classes
 
 # from account.serializers import CurrentUserPetSerializer
 from .serializers import PostSerializer
-# from .permissions import OwnerOrReadOnly
+from .permissions import OwnerOrReadOnly
 from .models import Post
 
 
@@ -35,7 +35,7 @@ class PostRetrieveUpdateDeleteView(generics.GenericAPIView,
     serializer_class = PostSerializer
     queryset = Post.objects.all()
 
-    permission_classes = [IsAuthenticated]  
+    permission_classes = [OwnerOrReadOnly, IsAuthenticated]  
 
     def get(self, request:Request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
