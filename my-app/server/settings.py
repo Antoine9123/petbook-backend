@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     "pets",
     "posts",
-    "account"
+    "account",
+    "follows"
     
 ]
 
