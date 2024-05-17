@@ -153,7 +153,7 @@ PUT and DELETE methods, access is restricted to the owner of the post
 }
 ```
 
-###  get-post-from/:pet_id/ [GET]
+###  /api/posts/get-post-from/:pet_id/ [GET]
 #### output (get)
 ```
 [
@@ -167,7 +167,7 @@ PUT and DELETE methods, access is restricted to the owner of the post
 ]
 ```
 
-###  get-post-by/:category/ [GET]
+###  /api/posts/get-post-by/:category/ [GET]
 #### output (get)
 ```
 [
@@ -179,4 +179,45 @@ PUT and DELETE methods, access is restricted to the owner of the post
     },
     ...
 ]
+```
+
+# Follow Routes
+    [GET] api/user/<int:user_id>/: Retrieve a list of all pets followed by an user ID.
+    [POST] /add/: add a follow a pet by user
+    [DELETE] delete/: delete a follow a pet by user
+
+### api/follows/user/:user_id/  [GET]
+#### output (get)
+```
+[
+	{
+		"id": "integer",
+		"pet": {
+			"id": "integer",
+			"url": "string",
+			"name": "string",
+			"gender": "string",
+			"birth": "date",
+			"age": "string",
+			"description": "string",
+			"photo_url": "string"
+		}
+	},
+	...
+]
+```
+### api/follows/add  [POST]
+#### input (post)
+```
+{
+	"pet_id": "integer"
+}
+```
+
+### api/follows/delete  [DELETE]
+#### input (post)
+```
+{
+	"pet_id": "integer"
+}
 ```

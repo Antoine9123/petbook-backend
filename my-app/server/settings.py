@@ -30,7 +30,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     "pets",
     "posts",
-    "account"
+    "account",
+    "follows"
+    
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
