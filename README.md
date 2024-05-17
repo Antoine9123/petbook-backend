@@ -107,9 +107,9 @@ PUT and DELETE methods, access is restricted to the owner of the pet
 # Post Routes
     [GET/POST] /api/posts/: Retrieve a list of all posts or add a new one.
     [GET/PUT/DELETE] /api/posts/<post_id>/: Retrieve, update, or delete a specific post by ID.
-    [GET] /api/post/get-post-from/<int:pet_id>/: Retrieve a list of posts for a specific pet ID.
-    [GET] /api/post/<str:category>/: Retrieve a list of posts for a specific pet category.
-    [GET] /api/post/feed: Get the user feed
+    [GET] /api/posts/get-post-from/<int:pet_id>/: Retrieve a list of posts for a specific pet ID.
+    [GET] /api/posts/<str:category>/: Retrieve a list of posts for a specific pet category.
+    [GET] /api/posts/feed: Get the user feed
 
 ### /api/posts/  [GET/POST]
 #### input (post)
