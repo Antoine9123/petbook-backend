@@ -14,7 +14,6 @@ class PostSerializer(serializers.ModelSerializer):
             'url',
             'description',
             'pet',
-            'owner',
             'photo_url'
         ]
 
