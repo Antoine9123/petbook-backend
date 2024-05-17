@@ -41,3 +41,13 @@ class CurrentUserPetSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'pets']
+
+class CurrentUserPostSerializer(serializers.ModelSerializer):
+
+    pets = serializers.HyperlinkedRelatedField(
+        many=True, view_name="post-detail", queryset=User.objects.all()
+        )
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'pets', 'post']

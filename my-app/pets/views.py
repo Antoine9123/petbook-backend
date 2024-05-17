@@ -1,7 +1,7 @@
 from rest_framework import generics, mixins
-
 from rest_framework.request import Request
 from rest_framework.permissions import IsAuthenticated
+
 
 from .serializers import PetSerializer
 from .permissions import OwnerOrReadOnly

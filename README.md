@@ -103,3 +103,80 @@ PUT and DELETE methods, access is restricted to the owner of the pet
     ...
 ]
 ```
+
+# Post Routes
+    [GET] /api/posts/: Retrieve a list of all posts.
+    [GET/PUT/DELETE] /api/posts/<post_id>/: Retrieve, update, or delete a specific post by ID.
+    [GET] get-post-from/<int:pet_id>/: Retrieve a list of posts for a specific pet ID.
+    [GET] get-post-by/<str:category>/: Retrieve a list of posts for a specific pet category.
+
+### /api/posts/  [GET/POST]
+#### input (post)
+```
+{
+    "description": "string",
+    "photo_url": "string",
+    "pet" : "integer(id)"
+}
+```
+#### output (get)
+```
+[
+    {
+        "id": "integer",
+        "description": "string",
+        "photo_url": "string",
+        "pet": 'integer(id)'
+    },
+    ...
+]
+```
+
+###  /api/posts/:id/ [GET/PUT/DELETE]
+PUT and DELETE methods, access is restricted to the owner of the pet
+
+#### input (put)
+```
+{
+    "description": "string",
+    "photo_url": "string",
+    "pet" : "integer(id)"
+}
+```
+#### output (get)
+```
+{
+    "id": "integer",
+    "description": "string",
+    "photo_url": "string",
+    "pet": 'integer(id)'
+}
+```
+
+###  get-post-from/:pet_id/ [GET]
+#### output (get)
+```
+[
+    {
+    "id": "integer",
+    "description": "string",
+    "photo_url": "string",
+    "pet": 'integer(id)'
+    },
+    ...
+]
+```
+
+###  get-post-by/:category/ [GET]
+#### output (get)
+```
+[
+    {
+    "id": "integer",
+    "description": "string",
+    "photo_url": "string",
+    "pet": 'integer(id)'
+    },
+    ...
+]
+```
