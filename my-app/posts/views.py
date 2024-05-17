@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import PostSerializer
 from .permissions import OwnerOrReadOnly
 from .models import Post
+from follows.models import Follow
 
 
 class PostListCreateView(generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
@@ -70,3 +71,15 @@ class ListPostForCategory(generics.GenericAPIView,
 
     def get(self, request:Request, *args, **kwargs):
         return self.list(request,*args, **kwargs)
+
+class UserFeedListView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        followed_pets = Follow.objects.filter(owner=user).values_list('pet', flat=True)
+        
+        queryset = Post.objects.filter(pet__in=followed_pets)
+        
+        return queryset

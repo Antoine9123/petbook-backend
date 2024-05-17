@@ -20,11 +20,25 @@ class FollowCreateView(generics.CreateAPIView):
     serializer_class = FollowSerializer
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        pet_id = self.request.data.get('pet_id')
-        pet = get_object_or_404(Pet, id=pet_id)
-        serializer.save(owner=self.request.user, pet=pet)
+    def perform_create(self, serializer, pet):
+        user = self.request.user
+        serializer.save(owner=user, pet=pet)
 
+    def post(self, request, *args, **kwargs):
+        pet_id = request.data.get('pet_id')
+        pet = get_object_or_404(Pet, id=pet_id)
+
+        user = request.user
+        already_following = Follow.objects.filter(owner=user, pet=pet).exists()
+        if already_following:
+            return Response(data={"error": "User is already following this pet."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer, pet)
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
 class FollowDeleteView(generics.DestroyAPIView):
     permission_classes = [OwnerOrReadOnly,IsAuthenticated]
 
